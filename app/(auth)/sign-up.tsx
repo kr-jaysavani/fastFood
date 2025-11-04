@@ -1,6 +1,7 @@
 import { CustomButton } from "@/components/CustomButton";
 import { CustomInput } from "@/components/CustomInput";
 import { createUser } from "@/lib/appwrite";
+import useAuthStore from "@/store/auth.store";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Text, View } from "react-native";
@@ -8,6 +9,8 @@ import { Alert, Text, View } from "react-native";
 const Signup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const { fetchAuthenticatedUser } = useAuthStore();
+
   const submit = async () => {
     const { name, email, password } = form;
 
@@ -21,7 +24,7 @@ const Signup = () => {
 
     try {
       await createUser({ email, password, name });
-
+      await fetchAuthenticatedUser();
       router.replace("/");
     } catch (error: any) {
       Alert.alert("Error", error.message);
@@ -34,20 +37,24 @@ const Signup = () => {
       <CustomInput
         placeholder="Enter your full name"
         value={form.name}
-        onChangeText={(text) => setForm((prev) => ({ ...prev, name: text }))}
+        onChangeText={(text: any) =>
+          setForm((prev) => ({ ...prev, name: text }))
+        }
         label="Full name"
       />
       <CustomInput
         placeholder="Enter your email"
         value={form.email}
-        onChangeText={(text) => setForm((prev) => ({ ...prev, email: text }))}
+        onChangeText={(text: any) =>
+          setForm((prev) => ({ ...prev, email: text }))
+        }
         label="Email"
         keyboardType="email-address"
       />
       <CustomInput
         placeholder="Enter your password"
         value={form.password}
-        onChangeText={(text) =>
+        onChangeText={(text: any) =>
           setForm((prev) => ({ ...prev, password: text }))
         }
         label="Password"

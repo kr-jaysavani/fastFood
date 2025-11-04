@@ -1,3 +1,5 @@
+import { Models } from "react-native-appwrite";
+
 interface CustomInputProps {
   placeholder?: string;
   value?: string;
@@ -5,6 +7,12 @@ interface CustomInputProps {
   label: string;
   secureTextEntry?: boolean;
   keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
+}
+
+export interface User extends Models.Document {
+  name: string;
+  email: string;
+  avatar: string;
 }
 
 interface CustomButtonProps {
